@@ -72,6 +72,7 @@ module.exports.post = function(req, res) {
                     function(file) {
                         console.log('questions ok');
                         var questions = JSON.parse(file);
+                        console.log("Questions: " + questions);
                         for (var i=0; i<questions.length;i++) {
                              var questionDB= db.model('Question', schemas.questionSchema);
                              var newQuestion=new questionDB({
@@ -81,7 +82,6 @@ module.exports.post = function(req, res) {
                             });
                             newQuestion.save();
                             newSlideshow.questions.push(newQuestion._id);
-
                             var optionDB=db.model('Option', schemas.optionSchema);
                             for (var j=0;j< questions[i].options.length;j++) {
                                 newOptionDB=new optionDB( {
@@ -94,8 +94,8 @@ module.exports.post = function(req, res) {
 
                             }
 
-
                         }
+                        console.log("Parsing questions done");
 
                         return true;
                     },
@@ -145,3 +145,4 @@ module.exports.post = function(req, res) {
             .pipe(unzip.Extract({ path:'slides/' + newSlideshow._id }));
     });
 }
+
